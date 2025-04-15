@@ -4,8 +4,8 @@ import New from './pages/New.jsx';
 import Diary from './pages/Diary.jsx';
 import {Link, Route, Routes, useNavigate} from 'react-router-dom';
 import Notfound from './pages/Notfound.jsx';
-
-import {getEmotionImage} from './util/get-emotion-image.js';
+import Button from './components/Button.jsx';
+import Header from './components/Header.jsx';
 
 // 1. "/" : Home
 // 2. "/new" : New
@@ -15,15 +15,23 @@ function App() {
   let nav = useNavigate();
 
   const onClickButton = () => {
-    nav("/new")
+    nav('/new')
   };
   return (
       <>
-        <img src={getEmotionImage(1)} alt=""/>
-        <img src={getEmotionImage(2)} alt=""/>
-        <img src={getEmotionImage(3)} alt=""/>
-        <img src={getEmotionImage(4)} alt=""/>
-        <img src={getEmotionImage(5)} alt=""/>
+        <Header title={'감정일기장'}
+                leftChild={<Button text="<"/>}
+                rightChild={<Button text=">" />}/>
+        <Button text={'버튼'} onClick={() => (
+            console.log('=>(App.jsx:25) ')
+        )}
+        /><Button text={'버튼'} onClick={() => (
+          console.log('=>(App.jsx:25) ')
+      )} type={'POSITIVE'}
+      /><Button text={'버튼'} onClick={() => (
+          console.log('=>(App.jsx:25) ')
+      )} type={'NEGATIVE'}
+      />
         <div>
           <Link to={'/'}>Home</Link>
           <Link to={'/new'}>New</Link>
@@ -37,7 +45,7 @@ function App() {
           <Route path="*" element={<Notfound/>}></Route>
         </Routes>
       </>
-  )
+  );
 }
 
 export default App
