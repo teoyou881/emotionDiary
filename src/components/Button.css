@@ -1,0 +1,17 @@
+.Button {
+    background-color: rgb(255, 220, 222);
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    padding: 5px;
+    font-size: 20px;
+    white-space: nowrap;
+}
+
+.Button_POSITIVE {
+    background-color: rgb(1, 145, 120);
+}
+
+.Button_NEGATIVE {
+    background-color: rgb(255, 0, 0);
+}
