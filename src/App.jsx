@@ -4,10 +4,8 @@ import New from './pages/New.jsx';
 import Diary from './pages/Diary.jsx';
 import {Link, Route, Routes} from 'react-router-dom';
 import Notfound from './pages/Notfound.jsx';
-import Button from './components/Button.jsx';
-import Header from './components/Header.jsx';
 import Edit from './pages/Edit.jsx';
-import {useReducer, useRef} from 'react';
+import {createContext, useReducer, useRef} from 'react';
 
 const mockData = [
   {
@@ -27,7 +25,7 @@ const mockData = [
 function reducer(state, action) {
   switch (action.type) {
     case 'CREATE':
-      return [action.data, ...state, ];
+      return [action.data, ...state];
     case 'UPDATE':
       return state.map(item =>
           String(item.id) === String(action.data.id) ? action.data : item,
@@ -38,6 +36,9 @@ function reducer(state, action) {
       return state;
   }
 }
+
+const DiaryContext = createContext();
+const DiaryActionsContext = createContext();
 
 function App() {
 
@@ -69,7 +70,7 @@ function App() {
       },
     })
   };
-  
+
   const onDelete = (id) => {
     dispatch({
       type:'DELETE',
@@ -79,32 +80,37 @@ function App() {
 
   return (
       <>
-
-        <button onClick={()=>{
+        <button onClick={() => {
           onCreate(new Date().getTime(), 1, 'test');
-        }}>create test</button>
+        }}>create test
+        </button>
 
-        <button onClick={()=>{
+        <button onClick={() => {
           onUpdate(1, new Date().getTime(), 1, 'update');
-        }}>update test</button>
+        }}>update test
+        </button>
 
-        <button onClick={()=>{
+        <button onClick={() => {
           onDelete(1);
-        }}>delete test</button>
+        }}>delete test
+        </button>
         <div>
           <Link to={'/'}>Home</Link>
           <Link to={'/new'}>New</Link>
           <Link to={'/diary'}>Diary</Link>
           <Link to={'/edit'}>Edit</Link>
-
         </div>
-        <Routes>
-          <Route path={'/'} element={<Home/>}></Route>
-          <Route path={'/new'} element={<New/>}></Route>
-          <Route path={'/diary/:id'} element={<Diary/>}></Route>
-          <Route path={'/edit/:id'} element={<Edit/>}></Route>
-          <Route path="*" element={<Notfound/>}></Route>
-        </Routes>
+        <DiaryContext.Provider value={data}>
+          <DiaryActionsContext.Provider value={{onCreate, onUpdate, onDelete}}>
+            <Routes>
+              <Route path={'/'} element={<Home/>}></Route>
+              <Route path={'/new'} element={<New/>}></Route>
+              <Route path={'/diary/:id'} element={<Diary/>}></Route>
+              <Route path={'/edit/:id'} element={<Edit/>}></Route>
+              <Route path="*" element={<Notfound/>}></Route>
+            </Routes>
+          </DiaryActionsContext.Provider>
+        </DiaryContext.Provider>
       </>
   );
 }
