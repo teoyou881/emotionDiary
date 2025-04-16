@@ -1,0 +1,68 @@
+.DiaryItem {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+
+    padding: 15px 0px;
+    border-bottom: 1px solid coral;
+}
+
+.DiaryItem .img_section {
+    min-width: 120px;
+    height: 80px;
+
+
+    /*
+    `display: flex`를 적용한 컨테이너의 특성:
+    1. **자식 요소 제한**: 기본적으로 자식 요소들은 플렉스 컨테이너 내부에 머물게 됩니다. 이미지가 컨테이너보다 클 경우, 기본적으로 컨테이너 크기에 맞게 축소됩니다.
+    2. **오버플로우 제어**: 자식 이미지가 원래 크기대로 표시되면서 컨테이너를 벗어나는 것을 방지합니다.
+    3. **이미지 비율 유지**: 추가 속성을 지정하지 않으면, 플렉스 아이템(이미지)은 자신의 내용물에 맞게 크기가 조정되지만 컨테이너를 벗어나지 않습니다.
+    */
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+
+    border-radius: 10px;
+}
+
+.DiaryItem .img_section > img {
+    width: 50px;
+}
+
+.DiaryItem .img_section_1 {
+    background-color: rgb(100, 201, 100);
+}
+
+.DiaryItem .img_section_2 {
+    background-color: rgb(157, 215, 114);
+}
+
+.DiaryItem .img_section_3 {
+    background-color: rgb(253, 206, 23);
+}
+
+.DiaryItem .img_section_4 {
+    background-color: rgb(253, 132, 70);
+}
+
+.DiaryItem .img_section_5 {
+    background-color: rgb(253, 86, 95);
+}
+
+.DiaryItem .info_section {
+    flex:1;
+    cursor: pointer;
+}
+
+.DiaryItem .info_section .created_date {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.DiaryItem .info_section .content {
+    font-size: 18px;
+}
+
+.DiaryItem .button_section {
+    min-width: 70px;
+}
