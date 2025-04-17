@@ -2,7 +2,7 @@ import './App.css'
 import Home from './pages/Home.jsx';
 import New from './pages/New.jsx';
 import Diary from './pages/Diary.jsx';
-import {Link, Route, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import Notfound from './pages/Notfound.jsx';
 import Edit from './pages/Edit.jsx';
 import {createContext, useReducer, useRef} from 'react';
@@ -10,14 +10,20 @@ import {createContext, useReducer, useRef} from 'react';
 const mockData = [
   {
     id        :1,
-    createDate:new Date().getTime(),
+    createdDate:new Date('2025-04-16').getTime(),
     emotionId :1,
     content   :'first',
   },
   {
     id        :2,
-    createDate:new Date().getTime(),
+    createdDate:new Date('2025-03-16').getTime(),
     emotionId :2,
+    content   :'second',
+  },
+  {
+    id        :3,
+    createdDate:new Date('2025-04-10').getTime(),
+    emotionId :3,
     content   :'second',
   },
 ]
@@ -37,8 +43,8 @@ function reducer(state, action) {
   }
 }
 
-const DiaryContext = createContext();
-const DiaryActionsContext = createContext();
+export const DiaryContext = createContext();
+export const DiaryActionsContext = createContext();
 
 function App() {
 
@@ -80,28 +86,11 @@ function App() {
 
   return (
       <>
-        <button onClick={() => {
-          onCreate(new Date().getTime(), 1, 'test');
-        }}>create test
-        </button>
-
-        <button onClick={() => {
-          onUpdate(1, new Date().getTime(), 1, 'update');
-        }}>update test
-        </button>
-
-        <button onClick={() => {
-          onDelete(1);
-        }}>delete test
-        </button>
-        <div>
-          <Link to={'/'}>Home</Link>
-          <Link to={'/new'}>New</Link>
-          <Link to={'/diary'}>Diary</Link>
-          <Link to={'/edit'}>Edit</Link>
-        </div>
         <DiaryContext.Provider value={data}>
-          <DiaryActionsContext.Provider value={{onCreate, onUpdate, onDelete}}>
+          <DiaryActionsContext.Provider
+              value={{
+                onCreate, onUpdate, onDelete,
+              }}>
             <Routes>
               <Route path={'/'} element={<Home/>}></Route>
               <Route path={'/new'} element={<New/>}></Route>
