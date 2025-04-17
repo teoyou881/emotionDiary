@@ -29,7 +29,7 @@ const DiaryList = ({data}) => {
             <option value="oldest">oldest</option>
           </select>
           <Button
-              onClick={()=>(nav(`/diary/new`))}
+              onClick={()=>(nav(`/new`))}
               text={'create new diary'} type={'POSITIVE'}/>
         </div>
         <div className="diary_wrapper">
