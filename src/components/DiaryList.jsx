@@ -20,6 +20,10 @@ const DiaryList = ({data}) => {
     }
 
   const nav = useNavigate();
+    const onClick = () => {
+      localStorage.removeItem('editorData');
+      nav(`/new`);
+    }
 
   return (
       <div className="DiaryList">
@@ -29,7 +33,7 @@ const DiaryList = ({data}) => {
             <option value="oldest">oldest</option>
           </select>
           <Button
-              onClick={()=>(nav(`/new`))}
+              onClick={onClick}
               text={'create new diary'} type={'POSITIVE'}/>
         </div>
         <div className="diary_wrapper">

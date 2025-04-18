@@ -6,14 +6,6 @@ background-color: slategray;
     text-align: center;
 }
 
-.EmotionItem:hover {
-    background-color: red;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-
-}
-
 .EmotionItem .emotion_img {
     width: 50%;
     margin-bottom: 10px;

@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './Editor.css'
 import EmotionItem from './EmotionItem.jsx';
 import Button from './Button.jsx';
+import {useNavigate} from 'react-router-dom';
 
 const emotionList = [
   {emotionId:1, emotionName:'best'},
@@ -25,31 +26,54 @@ const getStringedDate = (date) => {
   return `${year}-${month}-${day}`;
 }
 
-const Editor = () => {
-  const [input, setInput] = useState({
-    createdDate:new Date(),
-    emotionId  :3,
-    content    :'',
-  })
+const Editor = ({onSubmit}) => {
+
+  const nav = useNavigate();
+
+  const [input, setInput] = useState(()=>{
+    const savedData = localStorage.getItem('editorData');
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      // Date 객체 변환 처리
+      return {
+        ...parsedData,
+        createdDate: new Date(parsedData.createdDate)
+      };
+    }
+    return {
+      createdDate: new Date(),
+      emotionId: 0,
+      content: '',
+    };
+  });
+
+  // input 상태가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem('editorData', JSON.stringify(input));
+  }, [input]);
+
+
 
   const onChangeInput = (e) => {
-    setInput({
-      ...input,
-      [e.target.name]:new Date(e.target.value),
-    })
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === 'createdDate') {
+      value = new Date(e.target.value);
+    }
+    setInput({...input, [name]:value})
   }
 
-  const [emotionId, setEmotionId] = useState(1);
+  const onClickSubmit = () => {
+    if(!input.emotionId) {
+      return alert(
+          'please select emotion')
+    }else if (!input.content) return alert(
+        'please write diary'
+    )
+    onSubmit(input);
 
-  const onMouseOver = (e) => {
-    const emotionItem = e.target.closest('.emotion_item'); // EmotionItem의 div를 가져옴
-
-    if (emotionItem) {
-      const index = Array.from(emotionItem.parentNode.children).
-          indexOf(emotionItem) + 1; // 부모의 자식 노드들에서 현재 요소의 순서 확인
-      console.log(`Hovered over emotion item #${index}`);
-    }
-  };
+    localStorage.removeItem('editorData');
+  }
 
   return (
       <div
@@ -68,9 +92,15 @@ const Editor = () => {
             {emotionList.map(emotion => (
                 //  <EmotionItem key={emotion.id} emotionId={emotion.id} emotionName={emotion.name}/>
                 <EmotionItem
-                    key={emotion.id}
+                    onClick={()=>onChangeInput({
+                      target:{
+                        name:"emotionId",
+                        value:emotion.emotionId,
+                      }
+                    })}
+                    key={emotion.emotionId}
                     {...emotion}
-                    isSelected={emotion.emotionId === emotionId}/>
+                    isSelected={emotion.emotionId === input.emotionId}/>
             ))}
 
             {/* ### 배열 + `map`을 사용하는 것의 장점
@@ -113,11 +143,15 @@ const Editor = () => {
         </section>
         <section className="content_section">
           <h4>Today's diary</h4>
-          <textarea placeholder={'how was today?'}></textarea>
+          <textarea
+              name="content"
+              value={input.content}
+              onChange={onChangeInput}
+              placeholder={'how was today?'}></textarea>
         </section>
         <section className="button_section">
-          <Button text={'cancel'}/>
-          <Button text={'save'} type={'POSITIVE'}/>
+          <Button onClick={()=>nav(-1)} text={'cancel'}/>
+          <Button onClick={onClickSubmit} text={'save'} type={'POSITIVE'}/>
         </section>
       </div>
   )
