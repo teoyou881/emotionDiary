@@ -15,18 +15,23 @@ const emotionList = [
 // value in input tag can't understand new Date();
 // should convert it to String
 const getStringedDate = (date) => {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
+  // date가 유효한 Date 객체인지 확인
+  if (!(date instanceof Date) || isNaN(date.getTime())) {
+    return ''; // 유효하지 않으면 빈 문자열 반환
+  }
 
-  if (month < 10) return `${year}-0${month}-${day}`;
-  if (day < 10) return (
-      `${year}-${month}-0${day}`
-  )
-  return `${year}-${month}-${day}`;
+  const year = date.getUTCFullYear(); // UTC 기준 년도
+  const month = date.getUTCMonth() + 1; // UTC 기준 월 (0부터 시작하므로 +1)
+  const day = date.getUTCDate(); // UTC 기준 일
+
+  const formattedMonth = month < 10 ? `0${month}` : `${month}`;
+  const formattedDay = day < 10 ? `0${day}` : `${day}`;
+
+  return `${year}-${formattedMonth}-${formattedDay}`;
 }
 
-const Editor = ({onSubmit}) => {
+
+const Editor = ({initData, onSubmit}) => {
 
   const nav = useNavigate();
 
@@ -51,6 +56,16 @@ const Editor = ({onSubmit}) => {
   useEffect(() => {
     localStorage.setItem('editorData', JSON.stringify(input));
   }, [input]);
+
+
+  useEffect(() => {
+    if(initData){
+      setInput({
+        ...initData,
+        createdDate: new Date(Number(initData.createdDate)),
+      })
+    }
+  }, [initData]);
 
 
 

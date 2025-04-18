@@ -24,7 +24,7 @@ const mockData = [
     id        :3,
     createdDate:new Date('2025-04-10').getTime(),
     emotionId :3,
-    content   :'second',
+    content   :'third',
   },
 ]
 
@@ -49,7 +49,7 @@ export const DiaryActionsContext = createContext();
 function App() {
 
   const [data, dispatch] = useReducer(reducer, mockData);
-  const idRef = useRef(3);
+  const idRef = useRef(4);
 
   // create new diary
   const onCreate = (createdDate, emotionId, content) => {
@@ -65,12 +65,12 @@ function App() {
   }
 
   // edit 
-  const onUpdate = (id, createDate, emotionId, content) => {
+  const onUpdate = (id, createdDate, emotionId, content) => {
     dispatch({
       type:'UPDATE',
       data:{
         id,
-        createDate,
+        createdDate,
         emotionId,
         content,
       },
