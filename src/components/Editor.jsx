@@ -3,36 +3,14 @@ import './Editor.css'
 import EmotionItem from './EmotionItem.jsx';
 import Button from './Button.jsx';
 import {useNavigate} from 'react-router-dom';
+import {emotionList} from '../util/constants.js';
+import {getStringedDate} from '../util/get-stringed-data.js';
 
-const emotionList = [
-  {emotionId:1, emotionName:'best'},
-  {emotionId:2, emotionName:'good'},
-  {emotionId:3, emotionName:'normal'},
-  {emotionId:4, emotionName:'bad'},
-  {emotionId:5, emotionName:'worst'},
-]
 
-// value in input tag can't understand new Date();
-// should convert it to String
-const getStringedDate = (date) => {
-  // date가 유효한 Date 객체인지 확인
-  if (!(date instanceof Date) || isNaN(date.getTime())) {
-    return ''; // 유효하지 않으면 빈 문자열 반환
-  }
 
-  const year = date.getUTCFullYear(); // UTC 기준 년도
-  const month = date.getUTCMonth() + 1; // UTC 기준 월 (0부터 시작하므로 +1)
-  const day = date.getUTCDate(); // UTC 기준 일
-
-  const formattedMonth = month < 10 ? `0${month}` : `${month}`;
-  const formattedDay = day < 10 ? `0${day}` : `${day}`;
-
-  return `${year}-${formattedMonth}-${formattedDay}`;
-}
 
 
 const Editor = ({initData, onSubmit}) => {
-
   const nav = useNavigate();
 
   const [input, setInput] = useState(()=>{
